@@ -39,6 +39,19 @@ net = Model(inputs=inputs, outputs=outputs)
 # Summary of the net
 net.summary()
 
-# Plot the net and show
-plot_model(net, to_file='model.png', show_shapes=True)
+# Create loss function and optimizer
+net.compile(loss='categorical_crossentropy', optimizer='adam', metrics=['accuracy'])
 
+# Train the network
+history = net.fit(x_train, y_train, batch_size=256, epochs=20, validation_data=(x_test, y_test))
+
+# Plot the loss and accuracy curves for training and validation
+
+fig, ax = plt.subplots(1, 1)
+ax[0].plot(history.history['loss'], color='b', label="Training loss")
+ax[0].plot(history.history['val_loss'], color='r', label="validation loss", axes=ax[0])
+legend1 = ax[0].legend(loc='best', shadow=True)
+plt.show()
+
+# Save the network
+net.save('network_for_mnist.h5')

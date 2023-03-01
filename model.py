@@ -7,7 +7,7 @@ from keras.layers import Conv2D, Dense, Flatten, Dropout, Input, BatchNormalizat
 from keras.preprocessing.image import ImageDataGenerator
 import os
 
-# Data augmentator
+# Data augmenter
 datagen = ImageDataGenerator(
     rotation_range=15,
     width_shift_range=0.1,
@@ -37,19 +37,19 @@ datagen.fit(x_train)
 inputs = Input(shape=x_train.shape[1:])
 
 # Hidden layers 1
-conv = Conv2D(filters=32, kernel_size=(3, 3), activation='relu')(inputs)
+conv = Conv2D(filters=32, kernel_size=(3, 3), activation=LeakyReLU(alpha=0.01))(inputs)
 conv = BatchNormalization()(conv)
 conv = Conv2D(filters=32, kernel_size=(3, 3), activation='relu')(conv)
 conv = BatchNormalization()(conv)
-conv = Conv2D(filters=32, kernel_size=(5, 5), strides=2, padding='same', activation='relu')(conv)
+conv = Conv2D(filters=32, kernel_size=(5, 5), strides=2, padding='same', activation=LeakyReLU(alpha=0.01))(conv)
 conv = BatchNormalization()(conv)
 conv = Dropout(0.4)(conv)
 
-conv = Conv2D(filters=64, kernel_size=(3, 3), activation='relu')(conv)
+conv = Conv2D(filters=64, kernel_size=(3, 3), activation=LeakyReLU(alpha=0.01))(conv)
 conv = BatchNormalization()(conv)
-conv = Conv2D(filters=64, kernel_size=(3, 3), activation='relu')(conv)
+conv = Conv2D(filters=64, kernel_size=(3, 3), activation=LeakyReLU(alpha=0.01))(conv)
 conv = BatchNormalization()(conv)
-conv = Conv2D(filters=64, kernel_size=(5, 5), strides=2, padding='same', activation='relu')(conv)
+conv = Conv2D(filters=64, kernel_size=(5, 5), strides=2, padding='same', activation=LeakyReLU(alpha=0.01))(conv)
 conv = BatchNormalization()(conv)
 conv = Dropout(0.4)(conv)
 
@@ -76,7 +76,7 @@ batch_size = 64
 history = net.fit(
     datagen.flow(x_train, y_train, batch_size=batch_size),
     steps_per_epoch=len(x_train) / batch_size,
-    epochs=2,
+    epochs=45,
     validation_data=(x_test, y_test)
 )
 
